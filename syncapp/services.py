@@ -17,10 +17,12 @@ def sync_tasks():
     tasks = fetch_external_tasks()
 
     for t in tasks:
-        Task.objects.create(
+        Task.objects.update_or_create(
             external_id=t["id"],
-            title=t["title"],
-            status=t["status"],
+            defaults={
+                "title": t["title"],
+                "status": t["status"]
+            }
         )
 
     # Simulate potential external system errors
