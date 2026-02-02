@@ -35,3 +35,13 @@ class LastSyncStatusView(APIView):
         if not last:
             return Response({"status": "no sync yet"}, status=status.HTTP_200_OK)
         return Response(SyncRunSerializer(last).data, status=status.HTTP_200_OK)
+
+
+class TaskDeleteView(APIView):
+    def delete(self, request, task_id):
+        try:
+            task = Task.objects.get(id=task_id)
+            task.delete()
+            return Response({"status": "deleted"}, status=status.HTTP_200_OK)
+        except Task.DoesNotExist:
+            return Response({"error": "Task not found"}, status=status.HTTP_404_NOT_FOUND)
