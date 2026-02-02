@@ -10,6 +10,8 @@
   const rawOut = document.getElementById("raw-out");
   const statusOut = document.getElementById("status-out");
   const tasksBody = document.getElementById("tasks-body");
+  const messageBox = document.getElementById("message-box");
+  const retryBtn = document.getElementById("btn-retry");
 
   /**
    * Get CSRF token from hidden form
@@ -18,6 +20,16 @@
   function csrfToken() {
     const el = document.querySelector('[name=csrfmiddlewaretoken]');
     return el ? el.value : "";
+  }
+
+  /**
+   * Show message to user
+   */
+  function showMessage(msg, type) {
+    messageBox.textContent = msg;
+    messageBox.style.display = "block";
+    messageBox.className = "card " + (type === "error" ? "bad" : "ok");
+    setTimeout(function() { messageBox.style.display = "none"; }, 4000);
   }
 
   /**
@@ -50,8 +62,19 @@
       });
       const data = await safeJson(resp);
       rawOut.textContent = JSON.stringify({ status: resp.status, data }, null, 2);
+      if (resp.ok) {
+        showMessage("Sync completed", "success");
+        retryBtn.style.display = "none";
+        getStatus();
+        getTasks();
+      } else {
+        showMessage("Sync failed", "error");
+        retryBtn.style.display = "inline-block";
+      }
     } catch (error) {
       rawOut.textContent = JSON.stringify({ error: error.message }, null, 2);
+      showMessage("Sync error: " + error.message, "error");
+      retryBtn.style.display = "inline-block";
     }
   }
 
@@ -65,9 +88,33 @@
       const data = await safeJson(resp);
       statusOut.textContent = JSON.stringify(data, null, 2);
       rawOut.textContent = JSON.stringify({ status: resp.status, data }, null, 2);
+      if (data.status === "failed") {
+        retryBtn.style.display = "inline-block";
+      }
     } catch (error) {
       rawOut.textContent = JSON.stringify({ error: error.message }, null, 2);
       statusOut.textContent = JSON.stringify({ error: error.message }, null, 2);
+    }
+  }
+
+  /**
+   * Delete a task
+   */
+  async function deleteTask(taskId) {
+    if (!confirm("Delete this task?")) return;
+    try {
+      const resp = await fetch("/api/tasks/" + taskId + "/", {
+        method: "DELETE",
+        headers: { "X-CSRFToken": csrfToken() },
+      });
+      if (resp.ok) {
+        showMessage("Task deleted", "success");
+        getTasks();
+      } else {
+        showMessage("Failed to delete task", "error");
+      }
+    } catch (error) {
+      showMessage("Delete error: " + error.message, "error");
     }
   }
 
@@ -79,7 +126,7 @@
     tasksBody.innerHTML = "";
     if (!items || items.length === 0) {
       const tr = document.createElement("tr");
-      tr.innerHTML = '<td colspan="4" style="text-align: center; color: #999;">No tasks found</td>';
+      tr.innerHTML = '<td colspan="5" style="text-align: center; color:#999;">No tasks found</td>';
       tasksBody.appendChild(tr);
       return;
     }
@@ -91,8 +138,13 @@
         <td>${escapeHtml(t.title || "")}</td>
         <td>${escapeHtml(t.status || "")}</td>
         <td>${escapeHtml(t.updated_at || "")}</td>
+        <td><button class="btn-delete" data-id="${t.id}">Delete</button></td>
       `;
       tasksBody.appendChild(tr);
+    });
+
+    document.querySelectorAll(".btn-delete").forEach(btn => {
+      btn.addEventListener("click", function() { deleteTask(this.dataset.id); });
     });
   }
 
@@ -133,6 +185,11 @@
 
   // Event listeners
   document.getElementById("btn-sync").addEventListener("click", (e) => {
+    e.preventDefault();
+    postSync();
+  });
+
+  retryBtn.addEventListener("click", (e) => {
     e.preventDefault();
     postSync();
   });

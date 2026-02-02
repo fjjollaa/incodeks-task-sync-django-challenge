@@ -96,3 +96,17 @@ tbody tr:hover {
 #csrf-form {
   display: none;
 }
+
+.btn-delete {
+  padding: 4px 8px;
+  font-size: 12px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  background-color: #c82333;
+}
