@@ -1,7 +1,7 @@
 from django.db import models
 
 class Task(models.Model):
-    external_id = models.CharField(max_length=64)
+    external_id = models.CharField(max_length=64, unique=True)
     title = models.CharField(max_length=255)
     status = models.CharField(max_length=32)  # todo, in_progress, done (not enforced)
     updated_at = models.DateTimeField(auto_now=True)
