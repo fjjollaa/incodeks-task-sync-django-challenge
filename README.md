@@ -151,9 +151,9 @@ If given more time, I would:
 3. **Bulk Operations**: Add bulk delete and bulk sync capabilities
 4. **Monitoring**: Add detailed logging and metrics collection
 5. **API Documentation**: Add OpenAPI/Swagger documentation
-6. **Docker Support**: Containerize the application for easier deployment
-7. **Rate Limiting**: Add API rate limiting to prevent abuse
-8. **Task History**: Track task changes over time for audit trail
+6. **Rate Limiting**: Add API rate limiting to prevent abuse
+7. **Task History**: Track task changes over time for audit trail
+8. **Production Deployment**: Add production-ready configurations and deployment scripts
 
 ## Submission
 
