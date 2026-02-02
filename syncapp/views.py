@@ -18,6 +18,15 @@ class TriggerSyncView(APIView):
 class TaskListView(APIView):
     def get(self, request):
         qs = Task.objects.all().order_by("-updated_at")
+        
+        status_filter = request.query_params.get('status')
+        if status_filter:
+            qs = qs.filter(status=status_filter)
+        
+        search = request.query_params.get('search')
+        if search:
+            qs = qs.filter(title__icontains=search)
+        
         return Response(TaskSerializer(qs, many=True).data)
 
 class LastSyncStatusView(APIView):
