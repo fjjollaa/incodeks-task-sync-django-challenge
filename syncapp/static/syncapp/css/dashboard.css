@@ -1,0 +1,98 @@
+/* Incodeks Task Sync Dashboard Styles */
+
+body {
+  font-family: Arial, sans-serif;
+  max-width: 980px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+h1 {
+  margin: 0 0 8px;
+}
+
+.sub {
+  color: #555;
+  margin: 0 0 16px;
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+button {
+  padding: 10px 14px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #e9ecef;
+}
+
+button:active {
+  background-color: #dee2e6;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 12px 0;
+}
+
+.card strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+pre {
+  background: #f6f6f6;
+  padding: 12px;
+  overflow: auto;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  padding: 8px;
+  font-size: 14px;
+}
+
+th {
+  font-weight: 600;
+  background-color: #f8f9fa;
+}
+
+tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.ok {
+  color: #1b7f3a;
+}
+
+.bad {
+  color: #b00020;
+}
+
+#csrf-form {
+  display: none;
+}
