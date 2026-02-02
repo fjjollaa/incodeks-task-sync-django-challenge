@@ -4,9 +4,9 @@ from .models import Task, SyncRun
 from .services import sync_tasks
 
 
-class SyncTasksTest(TestCase):
+class PlaceholderTest(TestCase):
     
-    def test_sync_creates_tasks(self):
+    def test_placeholder(self):
         self.assertEqual(Task.objects.count(), 0)
         
         with patch('syncapp.services.random.choice', return_value=False):
